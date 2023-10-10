@@ -1,0 +1,15 @@
+
+#@username = "Wagner"
+
+###
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+	"username": "Wagner",
+	"password": "123",
+	"email": "wagner@thinkr.com"
+}
+
+###
+GET localhost:8080/users
