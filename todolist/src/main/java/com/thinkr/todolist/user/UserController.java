@@ -18,7 +18,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody UserModel user) {
         var username = userRepository.findByUsername(user.getUsername());
-        if(username != null) {
+        if (username != null) {
             return status(HttpStatus.CONFLICT).body("User already created");
         }
         var userCreated = userRepository.save(user);
