@@ -13,3 +13,17 @@ Content-Type: application/json
 
 ###
 GET localhost:8080/users
+
+###
+POST localhost:8080/tasks
+Content-Type: application/json
+Authorization: Basic "test user"
+
+{
+  "description": "New tasks",
+  "title": "Test tasks",
+  "priority": "low",
+  "startedAt": "2023-10-11T00:00:00Z",
+  "finishedAt": "2023-10-12T00:00:00Z",
+  "idUser": "a4962219-b417-4180-8324-bbbf27ddd358"
+}

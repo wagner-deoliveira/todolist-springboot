@@ -1,5 +1,6 @@
 package com.thinkr.todolist.user;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,9 @@ public class UserController {
         if (username != null) {
             return status(HttpStatus.CONFLICT).body("User already created");
         }
+
+        var passwordEncrypted = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+        user.setPassword(passwordEncrypted);
         var userCreated = userRepository.save(user);
         return status(HttpStatus.CREATED).body(userCreated);
     }
