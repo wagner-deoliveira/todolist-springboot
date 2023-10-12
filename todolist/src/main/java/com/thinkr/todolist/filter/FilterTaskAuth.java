@@ -12,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Objects;
 
 @Component
 public class FilterTaskAuth extends OncePerRequestFilter {
@@ -24,28 +25,36 @@ public class FilterTaskAuth extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var authorization = request.getHeader("Authorization");
-        var authEncoded = authorization.substring("Basic".length()).trim();
-        var authDecode = Base64.getDecoder().decode(authEncoded);
+        var servelPath = request.getServletPath();
 
-        var authString = new String(authDecode);
-        var credentials = authString.split(":");
+        if (servelPath.startsWith("/tasks")) {
 
-        var username = credentials[0];
-        var password = credentials[1];
+            var authorization = request.getHeader("Authorization");
+            var authEncoded = authorization.substring("Basic".length()).trim();
+            var authDecode = Base64.getDecoder().decode(authEncoded);
 
-        var user = userRepository.findByUsername(username);
-        if (user == null) {
-            response.sendError(401, "User not authenticated");
-            return;
-        }
+            var authString = new String(authDecode);
+            var credentials = authString.split(":");
 
-        var verification = BCrypt.verifyer().verify(password.getBytes(), user.getPassword().getBytes());
+            var username = credentials[0];
+            var password = credentials[1];
 
-        if (verification.verified) {
-            filterChain.doFilter(request, response);
+            var user = userRepository.findByUsername(username);
+            if (user == null) {
+                response.sendError(401, "User not authenticated");
+                return;
+            }
+
+            var verification = BCrypt.verifyer().verify(password.getBytes(), user.getPassword().getBytes());
+
+            if (verification.verified) {
+                request.setAttribute("idUser", user.getId());
+                filterChain.doFilter(request, response);
+            } else {
+                response.sendError(401);
+            }
         } else {
-            response.sendError(401);
+            filterChain.doFilter(request, response);
         }
     }
 }
