@@ -13,6 +13,17 @@ Content-Type: application/json
     "email": "wagner@thinkr.com"
 }
 
+
+###
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "John",
+  "password": "123",
+  "email": "john@thinkr.com"
+}
+
 ###
 POST localhost:8080/tasks
 Content-Type: application/json
@@ -27,14 +38,38 @@ Authorization: Basic Wagner 123
 }
 
 ###
+POST localhost:8080/tasks
+Content-Type: application/json
+Authorization: Basic Wagner 123
+
+{
+  "description": "New task big title",
+  "title": "Test task larger than the current task even larger than the current task",
+  "priority": "low",
+  "startedAt": "2023-11-11T00:00:00Z",
+  "finishedAt": "2023-11-12T00:00:00Z"
+}
+
+###
 GET localhost:8080/tasks
 Content-Type: application/json
 Authorization: Basic Wagner 123
 
 ###
-PATCH localhost:8080/tasks/3b5b564c-f6f4-4e3c-9e6b-9f2b2ee417e7
+PATCH localhost:8080/tasks/9cda2525-bef9-49f7-bf4d-ddcd88117478
 Content-Type: application/json
 Authorization: Basic Wagner 123
+
+{
+  "description": "New title updated",
+  "title": "Updated task",
+  "priority": "high"
+}
+
+###
+PATCH localhost:8080/tasks/9cda2525-bef9-49f7-bf4d-ddcd88117478
+Content-Type: application/json
+Authorization: Basic John 123
 
 {
   "description": "New title updated",
