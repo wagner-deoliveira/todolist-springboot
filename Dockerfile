@@ -2,7 +2,7 @@ FROM ubuntu:latest AS build
 LABEL authors="Wagner Rosa"
 
 RUN apt update
-RUN apt install openjdk-21-jdk -y
+RUN apt install openjdk-21 -y
 
 COPY . .
 
