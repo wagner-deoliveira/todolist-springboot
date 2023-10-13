@@ -1,8 +1,11 @@
 FROM ubuntu:latest AS build
 LABEL authors="Wagner Rosa"
 
-RUN apt update
-RUN apt install openjdk-21 -y
+RUN apt update && apt install wget
+RUN wget https://download.java.net/java/early_access/jdk21/28/GPL/openjdk-21-ea+xx_linux-x64_bin.tar.gz -y
+RUN tar -xvf openjdk-21-ea+28_linux-x64_bin.tar.gz
+RUN cd jdk-21
+RUN mkdir -p /usr/local/jdk-21 && mv * /usr/local/jdk-21
 
 COPY . .
 
